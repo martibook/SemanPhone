@@ -8,6 +8,8 @@ import nltk
 import sys
 from nltk.corpus import wordnet
 
+nltk.data.path.append('./nltk_data/')
+
 similar_baseline = 0.5
 
 def is_similar(sense1, sense2):
