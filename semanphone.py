@@ -36,6 +36,9 @@ def semanphone(word_id):
     # format similarity into percentage
     comparison = [ (x[0], format(x[1], '.2%')) for x in comparison ]
 
+    # remove '_' between words
+    comparison = [ (x[0].replace('_', ' '), x[1]) for x in comparison ]
+
     return comparison[0:min(100,len(comparison))]
 
 
