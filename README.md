@@ -1,7 +1,7 @@
 # SemanPhone
 Help to Recite New Vocabularies
 
-Have Fun With It  https://seman-phone.herokuapp.com/
+Have Fun With It  https://semanphone.fun
 
 
 HomePage
