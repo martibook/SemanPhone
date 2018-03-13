@@ -57,16 +57,16 @@
 <script>
 $("#word_id").autocomplete({
     source: function(request, response) {
-        $.ajax({
-            url: "http://en.wikipedia.org/w/api.php",
-            dataType: "jsonp",
+      $.ajax({
+            url: "https://api.datamuse.com/sug?",
+            dataType: "json",
             data: {
-                'action': "opensearch",
+                'action': "get",
                 'format': "json",
-                'search': request.term
+                's': request.term,
             },
             success: function(data) {
-                response(data[1]);
+                response(data.map(function(a) {return a.word;}));
             }
         });
     }
