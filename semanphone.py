@@ -52,16 +52,16 @@ def main():
     comparison = semanphone(word_id)
 
     # output top results on command line
-    for i in range(min(5, len(comparison))):
+    for i in range(min(10, len(comparison))):
         print("{w}  ---  {p}".format(w=comparison[i][0], p=comparison[i][1]))
 
-    # write into file
-    output_file = word_id + '_semanphone_results.csv'
-    with open(output_file, 'w+') as output:
-        writer = csv.writer(output)
-        for ele in comparison:
-            writer.writerow(ele)
-        print(output_file + " was generated successfully!")
+#    # write into file
+#    output_file = word_id + '_semanphone_results.csv'
+#    with open(output_file, 'w+') as output:
+#        writer = csv.writer(output)
+#        for ele in comparison:
+#            writer.writerow(ele)
+#        print(output_file + " was generated successfully!")
 
 
 if __name__ == '__main__':
