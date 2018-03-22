@@ -26,7 +26,7 @@ def compare_syllables(word1, word2):
     len1 = len(syllable1)
     len2 = len(syllable2)
     lencommon = lcs_count(syllable1, syllable2)
-    similarity = 2 * lencommon / (len1 + len2)  # weighted average
+    similarity = 2.0 * lencommon / (len1 + len2)  # weighted average
     return similarity
 #    return format(similarity, '.2%')
 #    print('Similarity: {}'.format(format(similarity, '.2%')))
@@ -73,7 +73,7 @@ def compare_phonemes(word1, word2):
     len1 = len(phoneme1.replace(' ', ''))
     len2 = len(phoneme2.replace(' ', ''))
     lencommon = len(common_phoneme.replace(' ', ''))
-    similarity = 2 * lencommon / (len1 + len2)  # weighted average
+    similarity = 2.0 * lencommon / (len1 + len2)  # weighted average
     return similarity
 #    return format(similarity, '.2%')
 #    print('Similarity: {}'.format(format(similarity, '.2%')))
