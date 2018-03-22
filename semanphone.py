@@ -46,7 +46,7 @@ def main():
     if len(sys.argv) == 2:
         word_id = sys.argv[1]
     else:
-        print('Usage: python semanphone.py word\n')
+        print('Usage: python {} word\n'.format(sys.argv[0]))
         return
 
     comparison = semanphone(word_id)
