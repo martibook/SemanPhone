@@ -1,7 +1,7 @@
 # SemanPhone
 Help to Recite New Vocabularies
 
-Have Fun With It  https://semanphone.fun
+Have Fun With It  http://semanphone.fun
 
 
 HomePage
