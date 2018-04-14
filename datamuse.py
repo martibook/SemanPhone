@@ -23,7 +23,9 @@ request_url = "https://api.datamuse.com/words?{c}={w}"
 
 def soundslike(word):
     """find sounds like words from datamuse
-    @return: a set of words
+
+    @word -- the given word
+    @return -- a set of words
     """
     # item {'word': --, 'score': --, 'numSyllables': --}
     item_list = requests.get(request_url.format(c="sl", w=word)).json()
@@ -33,13 +35,18 @@ def soundslike(word):
 def meanslike(word):
     """gather means like words from datamuse
 
-    @return: a set of words
+    @word -- the given word
+    @return -- a set of words
     """
     item_list = requests.get(request_url.format(c="ml", w=word)).json()
     return set([item['word'] for item in item_list])
 
 
 def main(word):
+    """for testing functions in this module
+
+    @word -- the given word
+    """
     output_file = word + "_datamuse"
     with open(output_file, 'w+') as output:
         # test meanslike

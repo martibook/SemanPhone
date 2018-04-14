@@ -12,29 +12,34 @@ from sav import SAV
 
 
 def get_candidate(word):
+    """get candidate word set
 
-    ## get candidate word set
+    @word -- the given word
+    @return -- a set of candidate words
+    """
+    # word should be lower case
+    word = word.lower()
+
     candidates = set()
     candidates |= meanslike(word)
     candidates |= senselike(word)
 
-    ## clean words in candidate set
-    # words contain word itself
-    # ! candidates is a LIST now
-    candidates = [w for w in candidates if not (word in w)]
 
-    # remove '_' and '-' between words
+    # remove '_' and '-' between words --> candidates is a LIST now
     candidates = [w.replace('_', ' ') for w in candidates]
     candidates = [w.replace('-', ' ') for w in candidates]
 
     # remove words which contains special characters (e.g. Ann's book)
     candidates = [w for w in candidates if ''.join(w.split()).isalpha()]
 
-    # remove phrase hase more than two words
+    # remove phrase has more than two words
     candidates = [w for w in candidates if len(w.split()) < 3]
 
     # turn all words into lowercase
     candidates = [w.lower() for w in candidates]
+
+    # remove words contain word itself
+    candidates = [w for w in candidates if not (word in w)]
 
     return candidates
 
@@ -42,6 +47,10 @@ def get_candidate(word):
 def metric(word1, word2):
     """
     combine phonetic association value and semantic association value
+
+    @word1 -- the first word
+    @word2 -- the second word
+    @return -- a combined metric value to determine how associated these two words are
     """
     # contribution parameter of phonetic association value
     ALPHA = 0.68
@@ -56,6 +65,9 @@ def metric(word1, word2):
 
 def semanphone(word):
     """finish all works here
+
+    @word -- the given word
+    @return -- a list of (word, score) pairs
     """
     QUOTA = 5
     candidates = get_candidate(word)
@@ -65,8 +77,8 @@ def semanphone(word):
 
 
 def main(word):
-
-    # write into file
+    """for testing functions in this module
+    """
     output_file = word + '_semanphone'
     with open(output_file, 'w+') as output:
         for w in semanphone(word):

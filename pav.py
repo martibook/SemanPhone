@@ -11,7 +11,11 @@ from pronouncing import phones_for_word
 
 
 def get_phoneme(word):
-    """ get phoneme from CMU dictionary """
+    """get phoneme from CMU dictionary
+    
+    @word -- the given word
+    @return -- phonetic symbol presentation of the given word
+    """
     words = word.split()
     words_pro = []
 
@@ -31,11 +35,9 @@ def get_phoneme(word):
 def PAV(word1, word2):
     """ compare the pronunciation of two words using LCS
 
-    arguments
-    word1, word2  a string of phonetic representation of a word
-
-    returns
-    phonetic association value
+    @word1 -- the first word
+    @word2 -- the second word
+    @return -- phonetic association value of two given words
     """
     phoneme1 = get_phoneme(word1)
     phoneme2 = get_phoneme(word2)
@@ -51,6 +53,8 @@ def PAV(word1, word2):
 
 
 def main(word1, word2):
+    """for testing functions in this module
+    """
     print('word1: ', word1)
     print('word2: ', word2)
     print('phonetic association value: {v: .2%}'.format(v=PAV(word1, word2)))

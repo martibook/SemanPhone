@@ -1,7 +1,6 @@
-""" get sense like words of a word from wordnet
+"""
+get sense like words of a word from wordnet
 
-Usage: python wordnet.py word
-output: a file contains sense like words of the given word
 """
 
 import nltk
@@ -14,6 +13,9 @@ nltk.data.path.append('./nltk_data/')
 def gather_itself(synset):
     """
     gather the lemmas of a synset itself
+
+    @synset -- the given synset
+    @return -- a set of words in the given synset
     """
     s = set()
     for l in synset.lemmas():
@@ -24,6 +26,9 @@ def gather_itself(synset):
 def gather_hyponyms(synset):
     """
     gather the lemmas of all hyponym synsets
+
+    @synset -- the given synset
+    @return -- a set of words in the hyponyms synsets of the given synset
     """
     s = set()
     for hypo_synset in synset.hyponyms():
@@ -35,6 +40,9 @@ def gather_hyponyms(synset):
 def gather_hypernyms(synset):
     """
     gather the lemmas of all hypernym synsets
+
+    @synset -- the given synset
+    @return -- a set of words in the hypernyms synsets of the given synset
     """
     s = set()
     for hyper_synset in synset.hypernyms():
@@ -46,6 +54,9 @@ def gather_hypernyms(synset):
 def gather_sisterms(synset):
     """
     gather all sister terms of this synset ( actually the other hyponym synset of this synset's hypernyms )
+
+    @synset -- the given synset
+    @return -- a set of words in the sibling synsets of the given synset
     """
     s = set()
     for hyper_synset in synset.hypernyms():
@@ -70,11 +81,8 @@ def gather_all(synset):
 def senselike(word):
     """ get a list of sense like words of the given word from wordnet corpus
 
-    arguments:
-    @word_id  a word
-
-    returns:
-    a set of synonyms of word_id
+    @word -- the given word
+    @return -- a set of words which sense like the given word
     """
     s = set()
     for synset in wordnet.synsets(word):
@@ -83,6 +91,8 @@ def senselike(word):
 
 
 def main(word):
+    """for testing functions in this module
+    """
 
     output_file = word + "_wordnet"
     with open(output_file, "w+") as output:

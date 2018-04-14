@@ -8,12 +8,9 @@ import numpy as np
 def lcs(a, b):
     """ find the longest common subsequence of two sequences
 
-    arguments
-    a, b  a sequence
-
-    returns
-    the longest common subsequence
-
+    @a -- a sequence
+    @b -- a sequence
+    @return -- the longest common subsequence
     """
     m, n = len(a), len(b)
 
@@ -33,11 +30,9 @@ def lcs(a, b):
 def lcs_count(a, b):
     """ find the length of longest common subsequence of two sequences
 
-    arguments
-    a, b  a sequence
-
-    returns
-    the length of the lcs
+    @a -- a sequence
+    @b -- a sequence
+    @return -- the length of the lcs
 
     """
     m, n = len(a), len(b)
@@ -56,6 +51,8 @@ def lcs_count(a, b):
 
 
 def main(sequence1, sequence2):
+    """for testing functions in this module
+    """
 
     a, b = sequence1, sequence2
     print('longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs(a, b)))
