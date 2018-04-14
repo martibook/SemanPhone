@@ -1,69 +1,81 @@
-""" get a list of word which are similar to the input_word both semantically and phonetically
+"""
+get words which are both semantically and phonetically associated with the given word
 
 """
 
 import sys
 import csv
-from wordnet import gather_from_wordnet
-from oxford import gather_from_oxford
-from datamuse import gather_from_datamuse
-from compare import compare_phonemes
+from datamuse import meanslike
+from wordnet import senselike
+from pav import PAV
+from sav import SAV
 
 
-def semanphone(word_id):
+def get_candidate(word):
 
-    # get synonyms
-    synonyms = set()
-    from_oxford = gather_from_oxford(word_id)
-    from_wordnet = gather_from_wordnet(word_id)
-    from_datamuse = gather_from_datamuse(word_id)
-    if from_oxford is not None:
-        synonyms |= from_oxford
-    if from_wordnet is not None:
-        synonyms |= from_wordnet
-    if from_datamuse is not None:
-        synonyms |= from_datamuse
+    ## get candidate word set
+    candidates = set()
+    candidates |= meanslike(word)
+    candidates |= senselike(word)
 
-    # compare phonetic similarity
-    comparison = []
-    for ele in synonyms:
-        comparison.append((ele, compare_phonemes(word_id, ele)))
+    ## clean words in candidate set
+    # words contain word itself
+    # ! candidates is a LIST now
+    candidates = [w for w in candidates if not (word in w)]
 
-    # clean out None similarity and sort by similarity
-    comparison = [ x for x in comparison if x[1] is not None ]
-    comparison = sorted(comparison, key=lambda x:x[1], reverse=True)
+    # remove '_' and '-' between words
+    candidates = [w.replace('_', ' ') for w in candidates]
+    candidates = [w.replace('-', ' ') for w in candidates]
 
-    # format similarity into percentage
-    comparison = [ (x[0], format(x[1], '.2%')) for x in comparison ]
+    # remove words which contains special characters (e.g. Ann's book)
+    candidates = [w for w in candidates if ''.join(w.split()).isalpha()]
 
-    # remove '_' between words
-    comparison = [ (x[0].replace('_', ' '), x[1]) for x in comparison ]
+    # remove phrase hase more than two words
+    candidates = [w for w in candidates if len(w.split()) < 3]
 
-    return comparison[0:min(100,len(comparison))]
+    # turn all words into lowercase
+    candidates = [w.lower() for w in candidates]
+
+    return candidates
 
 
-def main():
-    if len(sys.argv) == 2:
-        word_id = sys.argv[1]
-    else:
-        print('Usage: python {} word\n'.format(sys.argv[0]))
-        return
+def metric(word1, word2):
+    """
+    combine phonetic association value and semantic association value
+    """
+    # contribution parameter of phonetic association value
+    ALPHA = 0.68
 
-    comparison = semanphone(word_id)
+    pa_v = PAV(word1, word2)
+    sa_v = SAV(word1, word2)
+    if pa_v is None or sa_v is None:
+        return 0
 
-    # output top results on command line
-    for i in range(min(10, len(comparison))):
-        print("{w}  ---  {p}".format(w=comparison[i][0], p=comparison[i][1]))
+    return ALPHA * pa_v + (1 - ALPHA) * sa_v
 
-#    # write into file
-#    output_file = word_id + '_semanphone_results.csv'
-#    with open(output_file, 'w+') as output:
-#        writer = csv.writer(output)
-#        for ele in comparison:
-#            writer.writerow(ele)
-#        print(output_file + " was generated successfully!")
+
+def semanphone(word):
+    """finish all works here
+    """
+    QUOTA = 5
+    candidates = get_candidate(word)
+    performance = [(w, metric(word, w)) for w in candidates]
+    winners = sorted(performance, key=lambda x:x[1], reverse=True)
+    return winners[:min(QUOTA, len(winners))]
+
+
+def main(word):
+
+    # write into file
+    output_file = word + '_semanphone'
+    with open(output_file, 'w+') as output:
+        for w in semanphone(word):
+            output.write("{w}\t{s}".format(w=w[0], s=w[1]))
+            output.write('\n')
+        print(output_file + " was generated successfully!")
 
 
 if __name__ == '__main__':
-    main()
+    import plac
+    plac.call(main)
 

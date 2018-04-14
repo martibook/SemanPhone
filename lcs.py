@@ -1,9 +1,9 @@
-""" calculate the lcs of two sequences
+"""
+calculate the longest common sequence of two sequences
 """
 
 import numpy as np
-from pronouncing import phones_for_word as pronounce
-import sys
+
 
 def lcs(a, b):
     """ find the longest common subsequence of two sequences
@@ -55,12 +55,14 @@ def lcs_count(a, b):
     return D[m,n]
 
 
+def main(sequence1, sequence2):
+
+    a, b = sequence1, sequence2
+    print('longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs(a, b)))
+    print('the length of the longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs_count(a, b)))
+
+
 if __name__ == '__main__':
-    if len(sys.argv) == 3:
-        a = sys.argv[1]
-        b = sys.argv[2]
-        print('longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs(a, b)))
-        print('the length of the longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs_count(a, b)))
-    else:
-        print('Usage:\npython lcs.py string1 string2')
+    import plac
+    plac.call(main)
 

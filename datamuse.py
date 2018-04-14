@@ -21,49 +21,37 @@ import json
 request_url = "https://api.datamuse.com/words?{c}={w}"
 
 
-def extract_from_json(jobject):
-    """ extract words from the passing json object
-
-    arguments
-    a json object
-
-    returns
-    a set of words
+def soundslike(word):
+    """find sounds like words from datamuse
+    @return: a set of words
     """
-    s = set()
-    for item in jobject:
-        s.add(item.get('word'))
-    return s
+    # item {'word': --, 'score': --, 'numSyllables': --}
+    item_list = requests.get(request_url.format(c="sl", w=word)).json()
+    return set([item['word'] for item in item_list])
 
 
-def gather_from_datamuse(word_id):
-    """gather synonyms of word_id from datamuse
+def meanslike(word):
+    """gather means like words from datamuse
 
-    returns:
-    a set of synonyms
+    @return: a set of words
     """
-    url = request_url.format(c="ml", w=word_id)
-    response = requests.get(url)
-    synonyms = extract_from_json(response.json())
-    return synonyms
+    item_list = requests.get(request_url.format(c="ml", w=word)).json()
+    return set([item['word'] for item in item_list])
 
 
-def main():
-    if len(sys.argv) == 2:
-        word_id = sys.argv[1]
-        output_file = word_id + "_datamuse_synonyms"
-    else:
-        print('Usage: python datamuse.py word')
-        return
-
+def main(word):
+    output_file = word + "_datamuse"
     with open(output_file, 'w+') as output:
-        for w in gather_from_datamuse(word_id):
+        # test meanslike
+#        for w in list(meanslike(word)):
+        # test soundslike
+        for w in list(soundslike(word)):
             output.write(w)
             output.write('\n')
         print(output_file + " generated successfully!")
 
 
 if __name__ == '__main__':
-    main()
-
+    import plac
+    plac.call(main)
 
