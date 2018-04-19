@@ -57,6 +57,8 @@ def main(word1, word2):
     """
     print('word1: ', word1)
     print('word2: ', word2)
+    print(get_phoneme(word1))
+    print(get_phoneme(word2))
     print('phonetic association value: {v: .2%}'.format(v=PAV(word1, word2)))
 
 
