@@ -17,8 +17,6 @@ def get_candidate(word):
     @word -- the given word
     @return -- a set of candidate words
     """
-    # word should be lower case
-    word = word.lower()
 
     candidates = set()
     candidates |= meanslike(word)
@@ -69,10 +67,14 @@ def semanphone(word):
     @word -- the given word
     @return -- a list of (word, score) pairs
     """
-    QUOTA = 5
+    # word should be lower case
+    word = word.lower()
+
     candidates = get_candidate(word)
     performance = [(w, metric(word, w)) for w in candidates]
     winners = sorted(performance, key=lambda x:x[1], reverse=True)
+
+    QUOTA = 5
     return winners[:min(QUOTA, len(winners))]
 
 
