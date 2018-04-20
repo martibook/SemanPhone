@@ -5,7 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import Required
 from semanphone import semanphone
-from exceptions import NoResults
+from tools.exceptions import NoResults
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'XMDidks2hal89JHNhdk93049dKndOpP'

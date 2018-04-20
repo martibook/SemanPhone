@@ -27,36 +27,12 @@ def lcs(a, b):
     return D[m,n]
 
 
-def lcs_count(a, b):
-    """ find the length of longest common subsequence of two sequences
-
-    @a -- a sequence
-    @b -- a sequence
-    @return -- the length of the lcs
-
-    """
-    m, n = len(a), len(b)
-
-    D = np.zeros((m+1, n+1), dtype=object)
-    D[:] = 0
-
-    for i_a, unit_a in enumerate(a, 1):
-        for i_b, unit_b in enumerate(b, 1):
-            if unit_a == unit_b:
-                D[i_a, i_b] = D[i_a-1, i_b-1] + 1
-            else:
-                D[i_a, i_b] = D[i_a-1, i_b] if D[i_a-1, i_b] > D[i_a, i_b-1] else D[i_a, i_b-1]
-
-    return D[m,n]
-
-
 def main(sequence1, sequence2):
     """for testing functions in this module
     """
 
     a, b = sequence1, sequence2
     print('longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs(a, b)))
-    print('the length of the longest common subsequence of {a} and {b} is\n{lcs}'.format(a=a, b=b, lcs=lcs_count(a, b)))
 
 
 if __name__ == '__main__':

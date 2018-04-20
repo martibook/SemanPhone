@@ -11,6 +11,7 @@ rel_jjb: popular adjectives to modify the given noun
 rel_trg: words that are statistically associated with the query word in the same piece of text
 rel_bga: frequent followers
 rel_bgb: frequent predecessors
+sl: sounds like
 """
 
 import sys
@@ -19,17 +20,6 @@ import json
 
 # c means constraint, w mean word
 request_url = "https://api.datamuse.com/words?{c}={w}"
-
-
-def soundslike(word):
-    """find sounds like words from datamuse
-
-    @word -- the given word
-    @return -- a set of words
-    """
-    # item {'word': --, 'score': --, 'numSyllables': --}
-    item_list = requests.get(request_url.format(c="sl", w=word)).json()
-    return set([item['word'] for item in item_list])
 
 
 def meanslike(word):
@@ -49,10 +39,7 @@ def main(word):
     """
     output_file = word + "_datamuse"
     with open(output_file, 'w+') as output:
-        # test meanslike
-#        for w in list(meanslike(word)):
-        # test soundslike
-        for w in list(soundslike(word)):
+        for w in list(meanslike(word)):
             output.write(w)
             output.write('\n')
         print(output_file + " generated successfully!")
