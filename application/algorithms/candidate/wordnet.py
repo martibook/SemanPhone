@@ -4,9 +4,9 @@ get sense like words of a word from wordnet
 """
 
 import nltk
-import sys
 from nltk.corpus import wordnet
 
+# put nltk_data/ under the whole project root directory
 nltk.data.path.append('./nltk_data/')
 
 

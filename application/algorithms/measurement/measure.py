@@ -1,5 +1,5 @@
-from measurement.pav import PAV
-from measurement.sav import SAV
+from .pav import PAV
+from .sav import SAV
 
 
 def measure(word1, word2, ALPHA=0.7):

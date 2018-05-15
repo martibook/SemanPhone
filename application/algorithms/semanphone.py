@@ -3,9 +3,9 @@ get words which are both semantically and phonetically associated with the given
 
 """
 
-from candidate.datamuse import meanslike
-from candidate.wordnet import senselike
-from measurement.measure import measure
+from .candidate.datamuse import meanslike
+from .candidate.wordnet import senselike
+from .measurement.measure import measure
 
 
 def get_candidate(word):
@@ -53,7 +53,8 @@ def semanphone(word):
     winners = sorted(performance, key=lambda x:x[1], reverse=True)
 
     QUOTA = 5
-    return winners[:min(QUOTA, len(winners))]
+    # change format for the database
+    return [w[0] for w in winners[:min(QUOTA, len(winners))]]
 
 
 def main(word):

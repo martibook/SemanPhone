@@ -5,7 +5,7 @@ value locates in [0,1]
 """
 
 
-from measurement.lcs import lcs
+from .lcs import lcs
 from pronouncing import phones_for_word
 
 
