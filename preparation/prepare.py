@@ -1,5 +1,10 @@
 """
 run this script seperately to prepare the test database
+
+but since we already have backup database so we don't need to run this anymore
+
+if you are going to run this script
+remember to set working directory to semanphone/
 """
 
 import requests

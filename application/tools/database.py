@@ -38,7 +38,7 @@ def add_new_word(word, definitions, examples, asso_words):
     :return:
     """
     db_session = DB_Session()
-    q = db_session.query(TestWords).filter_by(word=word).first()
+    q = db_session.query(TestWords).filter_by(word=word.strip()).first()
     if not q:
         definitions = '\n'.join([s.replace('\n', ' ') for s in definitions])
         examples = '\n'.join([s.replace('\n', ' ') for s in examples])
@@ -56,10 +56,10 @@ def pick_words_4experience():
     """
     db_session = DB_Session()
     rows = db_session.query(TestWords)
-    d = rows.count() // SIZE
+    rows_amount = rows.count()
     random_words = []
     for i in range(SIZE):
-        rand_idx = randrange(i * d + 1, (i + 1) * d + 1)
+        rand_idx = randrange(1, rows_amount + 1)
         rows[rand_idx].exp_time += 1
         random_words.append(rows[rand_idx].word)
     db_session.commit()
@@ -74,15 +74,52 @@ def pick_words_4control():
     """
     db_session = DB_Session()
     rows = db_session.query(TestWords)
-    d = rows.count() // SIZE
+    rows_amount = rows.count()
     random_words = []
     for i in range(SIZE):
-        rand_idx = randrange(i * d + 1, (i + 1) * d + 1)
+        rand_idx = randrange(1, rows_amount + 1)
         rows[rand_idx].con_time += 1
         random_words.append(rows[rand_idx].word)
     db_session.commit()
     db_session.close()
     return random_words
+
+
+def get_asso_words(word):
+    """
+    get asso_words of the word
+    :param word:
+    :return: a list of asso_words
+    """
+    db_session = DB_Session()
+    q = db_session.query(TestWords).filter_by(word=word).first()
+    if q:
+        asso_words = q.asso_words
+        asso_words = asso_words.split('\n')
+    else:
+        asso_words = []
+    db_session.commit()
+    db_session.close()
+    return asso_words
+
+
+def get_definitions(word):
+    """
+    get definitions of the word
+    :param word:
+    :return: a list of (definition_string, part_of_speech)
+    """
+    db_session = DB_Session()
+    q = db_session.query(TestWords).filter_by(word=word).first()
+    if q:
+        definitions = q.definitions.split('\n')
+        definitions = [tuple(d.split('#')) for d in definitions]
+    else:
+        definitions = []
+    db_session.commit()
+    db_session.close()
+    return definitions
+
 
 
 def increase_experience_corrate(word):

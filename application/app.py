@@ -6,7 +6,7 @@ from wtforms import StringField
 from wtforms.validators import Required
 from .algorithms.semanphone import semanphone
 from .tools.exceptions import NoResults
-from .tools.oxford_dictionary import crawl_word, extract_definitions
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'XMDidks2hal89JHNhdk93049dKndOpP'
