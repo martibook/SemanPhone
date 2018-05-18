@@ -49,18 +49,19 @@ def add_new_word(word, definitions, examples, asso_words):
     db_session.close()
 
 
-def pick_words_4experience():
+def pick_words_4experiment():
     """
-    pick up SIZE random words for experience page
+    pick up SIZE random words for experiment page
     :return: a list of random words
     """
     db_session = DB_Session()
-    rows = db_session.query(TestWords)
-    rows_amount = rows.count()
+    rows = db_session.query(TestWords).filter(TestWords.examples != '')
+    print(rows.count())
+    d = rows.count() // SIZE
     random_words = []
     for i in range(SIZE):
-        rand_idx = randrange(1, rows_amount + 1)
-        rows[rand_idx].exp_time += 1
+        rand_idx = randrange(1 + i * d, 1 + (i+1) * d)
+        # rows[rand_idx].exp_time += 1
         random_words.append(rows[rand_idx].word)
     db_session.commit()
     db_session.close()
@@ -73,12 +74,13 @@ def pick_words_4control():
     :return: a list of random words
     """
     db_session = DB_Session()
-    rows = db_session.query(TestWords)
-    rows_amount = rows.count()
+    rows = db_session.query(TestWords).filter(TestWords.examples != '')
+    print(rows.count())
+    d = rows.count() // SIZE
     random_words = []
     for i in range(SIZE):
-        rand_idx = randrange(1, rows_amount + 1)
-        rows[rand_idx].con_time += 1
+        rand_idx = randrange(1 + i * d, 1 + (i + 1) * d)
+        # rows[rand_idx].con_time += 1
         random_words.append(rows[rand_idx].word)
     db_session.commit()
     db_session.close()
@@ -121,30 +123,66 @@ def get_definitions(word):
     return definitions
 
 
+def get_quiz_info(random_words):
+    """
+    get examples and random answers for each test word in random_words
+    :param random_words: a list of random test words
+    :return: a list of quiz information
+    """
+    db_session = DB_Session()
+    allrows = db_session.query(TestWords)
+    quiz_info = []
+    for word in random_words:
+        info = {}
 
-def increase_experience_corrate(word):
-    """
-    increase exp_cor_time of the word
-    :param word:
-    :return:
-    """
+        info["word"] = word
+
+        q = db_session.query(TestWords).filter_by(word=word).first()
+        examples = q.examples.split('\n')
+        examples = [e.replace(word, "______") for e in examples]
+        examples = sorted(examples, key=len, reverse=True)
+        info["examples"] = examples[:min(2, len(examples))]
+
+        options = [word]
+        while len(options) < 5:
+            random_idx = randrange(1, allrows.count())
+            if allrows[random_idx].word != word:
+                options.append(allrows[random_idx].word)
+        options = sorted(options)
+        info["options"] = options
+
+        quiz_info.append(info)
+
+    db_session.commit()
+    db_session.close()
+    return quiz_info
+
+
+def increase_corrate(word, group):
+
     db_session = DB_Session()
     q = db_session.query(TestWords).filter_by(word=word).first()
     if q:
-        q.exp_cor_time += 1
+        if group == "experiment":
+            pass
+            # q.exp_cor_time += 1
+        if group == "control":
+            pass
+            # q.con_cor_time += 1
     db_session.commit()
     db_session.close()
 
 
-def increase_control_corrate(word):
-    """
-    increase con_cor_time of the word
-    :param word:
-    :return:
-    """
+def decrease_corrate(word, group):
+
     db_session = DB_Session()
     q = db_session.query(TestWords).filter_by(word=word).first()
     if q:
-        q.con_cor_time += 1
+        if group == "experiment":
+            pass
+            # q.exp_cor_time -= 1
+        if group == "control":
+            pass
+            # q.con_cor_time -= 1
     db_session.commit()
     db_session.close()

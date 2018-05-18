@@ -29,11 +29,30 @@
         <h3 class="mb-5">
             <em>learn 10 english words, then past a little quize. about 8 minutes only</em>
         </h3>
-        <a class="btn btn-primary btn-xl js-scroll-trigger" href="#">START</a>
+        <a id="start-btn" class="btn btn-primary btn-xl js-scroll-trigger" href="#">START</a>
     </div>
     <div class="overlay"></div>
 </header>
 
+
+
+<!-- script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+
+    $('#start-btn').click(function () {
+
+        num = Math.floor((Math.random() * 10) + 1);
+        if (num % 2 == 1) {
+            window.location.href = '/experiment';
+        } else {
+            window.location.href = '/control';
+        }
+    });
+
+
+</script>
 
 </body>
 

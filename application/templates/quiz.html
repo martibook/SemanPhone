@@ -13,39 +13,55 @@
 
 
         #header {
+            position: fixed;
             width: 100%;
-            height: 5%;
-            margin-top: 0%;
-            margin-left: 0%;
+            height: 8%;
+            top: 0px;
+            left: 0px;
         }
 
-        .next-button {
-            margin-top: 15px;
-            margin-left: 200px;
-            width: 120px;
-            height: 40px;
+        #footer {
+            width: 100%;
+            height: 320px;
         }
 
 
         #content {
             width: 100%;
-            height: 100%;
-            margin-top: 0%;
-            margin-left: 0%;
+            {#background: #893;#}
         }
 
-        #questions {
+        #item0 {
+            margin-top: 15%;
+        }
+
+        .item {
             width: 100%;
-            height: 40%;
-            margin-top: 70px;
-            margin-left: 0px;
+            margin-top: 30%;
         }
 
-        #answers {
+        .questions {
+            width: 100%;
+        }
+
+        .answers {
             width: 80%;
-            height: 50%;
             margin-top: 100px;
             margin-left: 10%;
+        }
+
+        .next-button {
+            margin-top: 80px;
+            margin-left: 80%;
+            width: 120px;
+            height: 40px;
+        }
+
+        .done-button {
+            margin-top: 80px;
+            margin-left: 80%;
+            width: 120px;
+            height: 40px;
         }
 
 
@@ -63,48 +79,127 @@
             <h6>choose the word which fits sentence(s) best.</h6>
         </div>
     </div>
-    <button type="button" class="btn btn-primary next-button">NEXT</button>
 </div>
 
 
 <div id="content">
 
 
-    <div id="questions" class="list-group list-group-flush">
-        <div class="list-group-item mx-auto">
-            <p class="mb-1">both countries carried out nuclear ______ in May</p>
+    {% for i in range(9) %}
+
+        <div id={{ "item{}".format(i) }} class='item'>
+
+            <div class="list-group list-group-flush questions">
+                {% for example in quiz_info[i]["examples"] %}
+                    <div class="list-group-item mx-auto">
+                        <p class="mb-1">{{ example }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-around answers">
+                {% for ans in quiz_info[i]["options"] %}
+                    <button type="button" class="btn btn-outline-secondary">{{ ans }}</button>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn btn-primary next-button">NEXT</button>
+
         </div>
-        <div class="list-group-item mx-auto">
-            <p class="mb-1">this is the first serious ______ of the peace agreement</p>
+
+    {% endfor %}
+
+
+    <div id="item9" class="item">
+
+        <div id={{ "item{}".format(i) }} class='item'>
+
+            <div class="list-group list-group-flush questions">
+                {% for example in quiz_info[9]["examples"] %}
+                    <div class="list-group-item mx-auto">
+                        <p class="mb-1">{{ example }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-around answers">
+                {% for ans in quiz_info[9]["options"] %}
+                    <button type="button" class="btn btn-outline-secondary">{{ ans }}</button>
+                {% endfor %}
+            </div>
+
         </div>
-    </div>
-
-
-    <div id="answers" class="d-flex justify-content-around">
-
-        <button type="button" class="btn btn-outline-secondary">test</button>
-        <button type="button" class="btn btn-outline-secondary">boat</button>
-        <button type="button" class="btn btn-outline-secondary">hurry</button>
-        <button type="button" class="btn btn-outline-secondary">season</button>
-        <button type="button" class="btn btn-outline-secondary">pet</button>
 
     </div>
 
 
 </div>
 
+<div id="footer">
+    <button type="button" class="btn btn-primary done-button">Done</button>
+</div>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+<script>
+
+    $('.next-button').click(function () {
+
+        parent_id = $(this).parent()[0].id;
+        next_num = parseInt(parent_id.substr(parent_id.length-1)) + 1;
+        target_id = parent_id.slice(0, parent_id.length-1) + next_num;
+
+        console.log(target_id);
+        if ( parent_id == 'item9' ) {
+            $('html, body').animate({scrollTop: $('#'+parent_id).offset().top}, 1000);
+        } else {
+            $('html, body').animate({scrollTop: $('#'+target_id).offset().top - $(window).height() * 0.2}, 1000);
+        }
+    });
+
+    $('.done-button').click(function () {
+        window.location.href = '/thankyou'
+    });
+
+    $('.btn-outline-secondary').click(function () {
+
+        self = $(this);
+        others = $(this).siblings();
+
+        word = $(this).text();
+        pathnames = window.location.pathname.split('/');
+        group = pathnames[pathnames.length-1];
+        console.log(word);
+        console.log(group);
+
+        for (var i in others) {
+            target = $(others[i]);
+            target_word = target.text();
+            if (target.hasClass('active')) {
+                target.removeClass('active');
+                $.get(`/decrease/${target_word}/${group}`);
+            }
+        }
+
+        if (!self.hasClass('active')) {
+            self.addClass('active');
+            $.get(`/increase/${word}/${group}`);
+        }
+
+    });
+
+</script>
+
 </body>
 </html>
 

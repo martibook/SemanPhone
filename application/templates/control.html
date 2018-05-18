@@ -30,6 +30,16 @@
             color: #ffffff;
         }
 
+        #countdown {
+            color: #ba9106;
+            position: fixed;
+            width: 170px;
+            height: 40px;
+            left: 50px;
+            top: 20px;
+            font-size: xx-large;
+        }
+
 
     </style>
 
@@ -41,33 +51,36 @@
 
 <div class="nav flex-column nav-pills" id="word-list" role="tablist" aria-orientation="vertical">
     <a class="nav-link active" id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
-    <a class="nav-link " id="word0" data-toggle="pill" href="#content0" role="tab" aria-controls="content0"
-       aria-selected="true">compunction</a>
+       aria-selected="true">{{ random_words[0] }}</a>
+
+    {% for i in range(1,10) %}
+
+    <a class="nav-link " id={{ "word{}".format(i) }} data-toggle="pill" href={{ "#content{}".format(i) }} role="tab" aria-controls={{ "content{}".format(i) }}
+       aria-selected="true">
+        {{ random_words[i] }}
+    </a>
+
+    {% endfor %}
+
 </div>
 
 
 <div class="tab-content" id="study-area">
     <div class="tab-pane fade show active" id="content0" role="tabpanel" aria-labelledby="word0">
-        <embed src="http://semanphone.fun/api/dictionary?word=phone" style="width:100%; height: 800px;">
+        <embed src={{ "http://127.0.0.1:5000/dictionary?word={}".format(random_words[0]) }} style="width:100%;height:800px;">
     </div>
-    <div class="tab-pane fade" id="content2" role="tabpanel" aria-labelledby="word2">...</div>
+
+    {% for i in range(1, 10) %}
+
+    <div class="tab-pane fade" id={{ "content{}".format(i) }} role="tabpanel" aria-labelledby={{ "word{}".format(i) }}>
+        <embed src={{ "http://127.0.0.1:5000/dictionary?word={}".format(random_words[i]) }} style="width:100%;height:800px;">
+    </div>
+
+    {% endfor %}
+</div>
+
+<div id="countdown">
+    05:00
 </div>
 
 
@@ -82,6 +95,29 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+<script>
+
+    var timer = 5 * 60;
+    function countdown() {
+        window.setTimeout('countdown()', 1000);
+        if (timer <= 0) {
+            pathnames = window.location.pathname.split('/');
+            group = pathnames[pathnames.length - 1];
+
+            window.location.href = `/quiz/${group}`;
+        }
+        mm = `0${Math.floor(timer / 60)}`;
+        ss = `${(timer % 60) < 10? '0':''}${timer % 60}`;
+        $('#countdown').text(`${mm}:${ss}`);
+        timer -= 1;
+        console.log(timer);
+    }
+
+    countdown();
+
+</script>
+
 </body>
 </html>
 
