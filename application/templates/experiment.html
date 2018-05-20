@@ -68,13 +68,13 @@
 
 <div class="tab-content" id="study-area">
     <div class="tab-pane fade show active" id="content0" role="tabpanel" aria-labelledby="word0">
-        <embed src={{ "http://127.0.0.1:5000/semanphone?word={}".format(random_words[0]) }} style="width:100%;height:800px;">
+        <embed src={{ "http://semanphone.fun/semanphone?word={}".format(random_words[0]) }} style="width:100%;height:800px;">
     </div>
 
     {% for i in range(1, 10) %}
 
     <div class="tab-pane fade" id={{ "content{}".format(i) }} role="tabpanel" aria-labelledby={{ "word{}".format(i) }}>
-        <embed src={{ "http://127.0.0.1:5000/semanphone?word={}".format(random_words[i]) }} style="width:100%;height:800px;">
+        <embed src={{ "http://semanphone.fun/semanphone?word={}".format(random_words[i]) }} style="width:100%;height:800px;">
     </div>
 
     {% endfor %}
