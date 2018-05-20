@@ -56,13 +56,13 @@ def pick_words_4experiment():
     """
     db_session = DB_Session()
     rows = db_session.query(TestWords).filter(TestWords.examples != '')
-    print(rows.count())
+    # print(rows.count())
     d = rows.count() // SIZE
     random_words = []
     for i in range(SIZE):
         rand_idx = randrange(1 + i * d, 1 + (i+1) * d)
-        # rows[rand_idx].exp_time += 1
         random_words.append(rows[rand_idx].word)
+        rows[rand_idx].exp_time += 1
     db_session.commit()
     db_session.close()
     return random_words
@@ -75,13 +75,13 @@ def pick_words_4control():
     """
     db_session = DB_Session()
     rows = db_session.query(TestWords).filter(TestWords.examples != '')
-    print(rows.count())
+    # print(rows.count())
     d = rows.count() // SIZE
     random_words = []
     for i in range(SIZE):
         rand_idx = randrange(1 + i * d, 1 + (i + 1) * d)
-        # rows[rand_idx].con_time += 1
         random_words.append(rows[rand_idx].word)
+        rows[rand_idx].con_time += 1
     db_session.commit()
     db_session.close()
     return random_words
@@ -164,11 +164,11 @@ def increase_corrate(word, group):
     q = db_session.query(TestWords).filter_by(word=word).first()
     if q:
         if group == "experiment":
-            pass
-            # q.exp_cor_time += 1
+            # pass
+            q.exp_cor_time += 1
         if group == "control":
-            pass
-            # q.con_cor_time += 1
+            # pass
+            q.con_cor_time += 1
     db_session.commit()
     db_session.close()
 
@@ -179,10 +179,10 @@ def decrease_corrate(word, group):
     q = db_session.query(TestWords).filter_by(word=word).first()
     if q:
         if group == "experiment":
-            pass
-            # q.exp_cor_time -= 1
+            # pass
+            q.exp_cor_time -= 1
         if group == "control":
-            pass
-            # q.con_cor_time -= 1
+            # pass
+            q.con_cor_time -= 1
     db_session.commit()
     db_session.close()
