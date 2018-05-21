@@ -11,22 +11,11 @@
 
     <style type="text/css">
 
-        #definition {
-            margin-top: 3%;
-            margin-left: 7%;
-            width: 85%;
-        }
 
         #association {
             margin-top: 3%;
             margin-left: 7%;
             width: 85%;
-        }
-
-        .keyword {
-            width: 90%;
-            margin-top: 3%;
-            margin-left: 5%;
         }
 
         .associated-word {
@@ -43,31 +32,6 @@
 
 
 <body>
-
-
-<div class="keyword">
-    <button type="button" class="btn btn-dark">
-        <h3>  {{ word }} </h3>
-    </button>
-    <hr>
-</div>
-
-
-<div id="definition" class="list-group">
-
-    {% for definition in definition_list %}
-        <div class="list-group-item list-group-item-action align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-                <p></p>
-                <span class="badge badge-warning">{{ definition[1] }}</span>
-            </div>
-            <p style="width: 92%;">
-                {{ definition[0] }}
-            </p>
-        </div>
-    {% endfor %}
-
-</div>
 
 
 <div class="associated-word">

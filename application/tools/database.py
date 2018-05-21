@@ -49,6 +49,17 @@ def add_new_word(word, definitions, examples, asso_words):
     db_session.close()
 
 
+def pick_words(group):
+    """
+    pick fixed 10 words for experiment group or control group
+    :param group:
+    :return: a list of 10 fixed words
+    """
+
+    fixed_words = ["advice", "field", "midnight", "information", "theft", "call", "reach", "abuse", "accept", "catch"]
+    return fixed_words
+
+
 def pick_words_4experiment():
     """
     pick up SIZE random words for experiment page
@@ -158,7 +169,7 @@ def get_quiz_info(random_words):
     return quiz_info
 
 
-def increase_corrate(word, group):
+def increase_corrate(word, ref_word, group):
 
     db_session = DB_Session()
     q = db_session.query(TestWords).filter_by(word=word).first()
@@ -169,11 +180,19 @@ def increase_corrate(word, group):
         if group == "control":
             # pass
             q.con_cor_time += 1
+
+    ref_q = db_session.query(TestWords).filter_by(word=ref_word).first()
+    if ref_q:
+        if group == "experiment":
+            ref_q.exp_time += 1
+        if group == "control":
+            ref_q.con_time += 1
+
     db_session.commit()
     db_session.close()
 
 
-def decrease_corrate(word, group):
+def decrease_corrate(word, ref_word, group):
 
     db_session = DB_Session()
     q = db_session.query(TestWords).filter_by(word=word).first()
@@ -184,5 +203,13 @@ def decrease_corrate(word, group):
         if group == "control":
             # pass
             q.con_cor_time -= 1
+
+    ref_q = db_session.query(TestWords).filter_by(word=ref_word).first()
+    if ref_q:
+        if group == "experiment":
+            ref_q.exp_time -= 1
+        if group == "control":
+            ref_q.con_time -= 1
+
     db_session.commit()
     db_session.close()

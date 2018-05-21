@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 
 from application.tools.exceptions import NoResults
 from application.tools.database import get_asso_words, get_definitions, pick_words_4experiment, pick_words_4control, \
-    get_quiz_info, increase_corrate, decrease_corrate
+    get_quiz_info, increase_corrate, decrease_corrate, pick_words
 
 
 test_app = Flask(__name__)
@@ -52,46 +52,55 @@ def api_dictionary():
 
 @test_app.route('/experiment')
 def experiment():
-    random_words = pick_words_4experiment()
-    session["exp_random_words"] = random_words
-    return render_template('experiment.html', random_words=random_words)
+    # random_words = pick_words_4experiment()
+    # session["exp_random_words"] = random_words
+    fixed_words = pick_words('experiment')
+    session["fixed_words"] = fixed_words
+    return render_template('experiment.html', random_words=fixed_words)
 
 
 @test_app.route('/control')
 def control():
-    random_words = pick_words_4control()
-    session["con_random_words"] = random_words
-    return render_template('control.html', random_words=random_words)
+    # random_words = pick_words_4control()
+    # session["con_random_words"] = random_words
+    fixed_words = pick_words("control")
+    session["fixed_words"] = fixed_words
+    return render_template('control.html', random_words=fixed_words)
 
 
 @test_app.route('/quiz/<group>')
 def quiz(group):
-    if group == 'experiment':
-        random_words = session["exp_random_words"]
-    elif group == "control":
-        random_words = session["con_random_words"]
-    else:
-        random_words = []
+    # if group == 'experiment':
+    #     random_words = session["exp_random_words"]
+    # elif group == "control":
+    #     random_words = session["con_random_words"]
+    # else:
+    #     random_words = []
 
-    quiz_info = get_quiz_info(random_words)
+    if session["fixed_words"]:
+        fixed_words = session["fixed_words"]
+    else:
+        fixed_words = []
+
+    quiz_info = get_quiz_info(fixed_words)
     return render_template('quiz.html', quiz_info=quiz_info)
 
 
-@test_app.route('/increase/<word>/<group>')
-def increase(word, group):
+@test_app.route('/increase/<word>/<ref_word>/<group>')
+def increase(word, ref_word, group):
     """
     increase <group> correct time of the word
     """
-    increase_corrate(word=word, group=group)
+    increase_corrate(word=word, ref_word=ref_word, group=group)
     return "success"
 
 
-@test_app.route('/decrease/<word>/<group>')
-def decrease(word, group):
+@test_app.route('/decrease/<word>/<ref_word>/<group>')
+def decrease(word, ref_word, group):
     """
     decrease <group> correct time of the word
     """
-    decrease_corrate(word=word, group=group)
+    decrease_corrate(word=word, ref_word=ref_word, group=group)
     return "success"
 
 
