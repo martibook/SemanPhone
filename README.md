@@ -10,7 +10,7 @@ This paper proposes an effective way to discover and memorize new English vocabu
 
 ---
 
-Here are some screenshot of the website implemented
+## Here are some screenshot of the website implemented
 
 ### HomePage
 
@@ -25,7 +25,7 @@ Here are some screenshot of the website implemented
 
 ---
 
-## A test flow designed for a controlled trial to test how effective SemanPhone is when reciting new vocabulary
+## Also I made a test flow for real person to measure how effective SemanPhone is when reciting new vocabulary
 ---
 
 ## Welcome to the Test
