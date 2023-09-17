@@ -1,5 +1,11 @@
 # SemanPhone
-Help to Recite New Vocabularies
+
+This program implements the idea proposed in the paper **SemanPhone: Combining Semantic and Phonetic 
+Word Association in Verbal Learning Context**
+
+Abstraction:
+
+This paper proposes an effective way to discover and memorize new English vocabulary based on both semantic and phonetic associations. The method we proposed aims to automatically find out the most associated words of a given target word. The measurement of semantic association was achieved by calculating cosine similarity of two-word vectors, and the measurement of phonetic association was achieved by calculating the longest common subsequence of phonetic symbol strings of two words. Finally, the method was implemented as a web application.
 
 ---
 
