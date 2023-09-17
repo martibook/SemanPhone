@@ -11,7 +11,7 @@ This paper proposes an effective way to discover and memorize new English vocabu
 ---
 
 ## Here are some screenshot of the website implemented
-
+---
 ### HomePage
 
 ![HomePage](https://github.com/MartiBook/SemanPhone/raw/master/demo_images/homepage.png)
